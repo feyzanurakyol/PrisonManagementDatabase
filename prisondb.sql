@@ -125,6 +125,8 @@ CREATE TABLE appointment(
 );
 
 CREATE TABLE health_status_changes(
+	`date` date,
+    `hour` time,
 	prison_id int,
     chronical_disease varchar(30),
     blood_type varchar(5),

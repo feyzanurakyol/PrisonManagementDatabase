@@ -28,7 +28,7 @@ ON health_status
 FOR EACH ROW
 BEGIN
 	INSERT INTO health_status_changes 
-    values(OLD.prison_id, OLD.chronical_disease, 
+    values(CURDATE(), HOUR(NOW()),OLD.prison_id, OLD.chronical_disease, 
 		   OLD.blood_type, OLD.age, OLD.disability_status);
 END//
 DELIMITER ;
