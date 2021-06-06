@@ -28,7 +28,7 @@ ON health_status
 FOR EACH ROW
 BEGIN
 	INSERT INTO health_status_changes 
-    values(CURDATE(), HOUR(NOW()),OLD.prison_id, OLD.chronical_disease, 
+    VALUES(CURDATE(), HOUR(NOW()),OLD.prison_id, OLD.chronical_disease, 
 		   OLD.blood_type, OLD.age, OLD.disability_status);
 END//
 DELIMITER ;
@@ -56,9 +56,15 @@ BEGIN
 END//
 DELIMITER ;
 
-
-1-Mahkum gelince ward capacity i düşür
-2-Doktor her health statusu değiştiriğinde ettiğinde kayıt oluştur
-3-HealthStatus her değiştidiğinde doktora bilgi veren bi tablo, geçmiş recordları görebilir.
-4-Bi mahkumun ward ı değiştirilirse, gerekli kapasite güncellemeleri yapılmalı
-5-Judgement eklenirse, release date i güncelle
+DELIMITER //
+CREATE TRIGGER appointment_deleted BEFORE DELETE
+ON appointment
+FOR EACH ROW
+BEGIN
+	UPDATE doctor SET doctor.appointment_count = doctor.appointment_count - 1
+    WHERE OLD.doctor_id = doctor.worker_id;
+    
+    INSERT INTO appointment_done VALUES(CURDATE(), HOUR(NOW()),OLD.prison_id, 
+								  OLD.doctor_id, OLD.created_date, OLD.created_time);
+END//
+DELIMITER ;
