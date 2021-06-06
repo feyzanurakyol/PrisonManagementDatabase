@@ -33,3 +33,4 @@ SELECT prison.prison_id, prison.`name`, department.department_name, doctor.`name
 FROM appointment, doctor, prison, department
 WHERE prison.prison_id = appointment.prison_id and doctor.worker_id = appointment.doctor_id
 	and department.department_id = doctor.department_id
+ORDER BY prison.prison_id;
