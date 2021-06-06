@@ -8,7 +8,7 @@ CREATE TABLE jailer (
 	`name` varchar(30) NOT NULL,
     `birth_date` date NOT NULL,
     `phone` int,
-    `address` varchar(300),
+    `country` varchar(300),
 	
     PRIMARY KEY (`worker_id`)
  );
@@ -38,7 +38,7 @@ CREATE TABLE prison (
 	`name` varchar(30) NOT NULL,
     `birth_date` date NOT NULL,
     `phone` int,
-    `address` varchar(300),
+    `country` varchar(300),
     arrest_date date,
     release_date date,
 	
@@ -77,13 +77,35 @@ CREATE TABLE visit(
     PRIMARY KEY(prison_id,visitor_tc)
 );
 
+CREATE TABLE doctor (
+	`worker_id` int NOT NULL,
+    `tc` int NOT NULL,
+	`name` varchar(30) NOT NULL,
+    `birth_date` date NOT NULL,
+    `phone` int,
+    `country` varchar(300),
+    department varchar(20),
+    
+    PRIMARY KEY(worker_id)
+);
+
 CREATE TABLE health_status(
 	prison_id int,
     chronical_disease varchar(30),
     blood_type varchar(5),
     age int,
     disability_status varchar(30),
+    doctor_id int,
     
-    CONSTRAINT FK_PrisonHealthId FOREIGN KEY (prison_id) REFERENCES prison(prison_id)
+    CONSTRAINT FK_PrisonHealthId FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
+    CONSTRAINT FK_DoctorId FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
 );
 
+
+CREATE TABLE appointment(
+	prison_id int,
+    doctor_id int,
+    
+	CONSTRAINT FK_PrisonHealthId FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
+    CONSTRAINT FK_DoctorId FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+);
