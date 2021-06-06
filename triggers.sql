@@ -35,7 +35,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE TRIGGER prison_ward_changes AFTER UPDATE
-ON prison.ward
+ON prison
 FOR EACH ROW
 BEGIN
 	UPDATE ward SET ward.size = ward.size - 1
@@ -43,6 +43,16 @@ BEGIN
     
     UPDATE ward SET ward.size = ward.size + 1
     WHERE OLD.ward_id = ward.ward_id;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER appointment_added AFTER INSERT
+ON appointment
+FOR EACH ROW
+BEGIN
+	UPDATE doctor SET doctor.size = doctor.size + 1
+    WHERE NEW.doctor_id = doctor.worker_id;
 END//
 DELIMITER ;
 

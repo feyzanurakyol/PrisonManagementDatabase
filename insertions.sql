@@ -69,13 +69,35 @@ INSERT INTO visit VALUES(3,349736402,'2021-08-10');
 INSERT INTO visit VALUES(4,567897364,'2021-08-10');
 INSERT INTO visit VALUES(5,523489736,'2021-08-10');
 
+INSERT INTO doctor VALUES (1001,123412, "Tuba Bayram","1998-08-24",54423432,"Samsun","Family Doctor",30,30);
+INSERT INTO doctor VALUES (1002,126712, "Zeynep Vildan Kurt","1996-08-24",54323432,"Samsun","Psychiatrist",30,30);
+INSERT INTO doctor VALUES (1003,123412, "Ali Bayram","1970-02-24",54423232,"İstanbul","Family Doctor",30,30);
+INSERT INTO doctor VALUES (1004,126712, "Naci Hal","1966-08-04",54323498,"Kocaeli","Psychiatrist",30,30);
 
-INSERT INTO health_status VALUES(1,'NO','0+','22','NO');
-INSERT INTO health_status VALUES(2,'NO','A+','24','NO');
-INSERT INTO health_status VALUES(3,'NO','A+','22','NO');
-INSERT INTO health_status VALUES(4,'NO','A+','22','NO');
-INSERT INTO health_status VALUES(5,'NO','A+','22','NO');
-INSERT INTO health_status VALUES(6,'Cardiac','A+','22','NO');
-INSERT INTO health_status VALUES(7,'NO','A+','22','NO');
-INSERT INTO health_status VALUES(8,'Thyroid patient','A+','22','NO');
+
+INSERT INTO health_status VALUES(1,'NO','0+','22','NO',1001);
+INSERT INTO health_status VALUES(2,'NO','A+','24','NO',1003);
+INSERT INTO health_status VALUES(3,'NO','A+','22','NO',1001);
+INSERT INTO health_status VALUES(4,'NO','A+','22','NO',1003);
+INSERT INTO health_status VALUES(5,'NO','A+','22','NO',1003);
+INSERT INTO health_status VALUES(6,'Cardiac','A+','22','NO',1001);
+INSERT INTO health_status VALUES(7,'NO','A+','22','NO',1001);
+INSERT INTO health_status VALUES(8,'Thyroid patient','A+','22','NO',1001);
+
+INSERT INTO appointment VALUES (1,1001,"1998-12-12");
+INSERT INTO appointment VALUES (2,1002,NULL);
+INSERT INTO appointment VALUES (1,1004,NULL);
+INSERT INTO appointment VALUES (3,1001,NULL);
+INSERT INTO appointment VALUES (4,1001,NULL);
+INSERT INTO appointment VALUES (5,1001,NULL);
+INSERT INTO appointment VALUES (6,1001, NULL);
+INSERT INTO appointment VALUES (7,1001,NULL);
+INSERT INTO appointment VALUES (8,1001,NULL);
+INSERT INTO appointment VALUES (8,1004,NULL);
+INSERT INTO appointment VALUES (7,1004,NULL);
+INSERT INTO appointment VALUES (5,1002,NULL);
+INSERT INTO appointment VALUES (3,1004,NULL);
+INSERT INTO appointment VALUES (4,1004,NULL);
+
+
 
