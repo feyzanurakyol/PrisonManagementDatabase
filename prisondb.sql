@@ -118,7 +118,7 @@ CREATE TABLE appointment(
 	prison_id int,
     doctor_id int,
     created_date DATE,
-    creted_time time,
+    created_time time,
     
 	CONSTRAINT FK_Prison_Id FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
     CONSTRAINT FK_Doctor_Id FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
@@ -150,3 +150,14 @@ CREATE TABLE officer (
     PRIMARY KEY (worker_id)
 );
 
+CREATE TABLE appointment_done( 
+	deleted_date date,
+    deleted_time time,
+	prison_id int,
+    doctor_id int,
+    created_date DATE,
+    created_time time,
+    
+	FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+);
