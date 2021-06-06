@@ -77,18 +77,28 @@ CREATE TABLE visit(
     PRIMARY KEY(prison_id,visitor_tc)
 );
 
+CREATE TABLE department(
+	department_id int,
+    department_name varchar(15),
+	capacity int,
+    
+    PRIMARY KEY (department_id)
+
+);
+
 CREATE TABLE doctor (
 	`worker_id` int NOT NULL,
+    `password` int,
     `tc` int NOT NULL,
 	`name` varchar(30) NOT NULL,
     `birth_date` date NOT NULL,
     `phone` int,
     `country` varchar(300),
-    department varchar(20),
-    capacity int,
-    size int,
+    department_id int,
+    appointment_count int,
     
-    PRIMARY KEY(worker_id)
+    PRIMARY KEY(worker_id),
+    CONSTRAINT FK_DepartmenId FOREIGN KEY (department_id) REFERENCES department(department_id)
 );
 
 CREATE TABLE health_status(
@@ -107,7 +117,8 @@ CREATE TABLE health_status(
 CREATE TABLE appointment(
 	prison_id int,
     doctor_id int,
-    created_date date NULL,
+    created_date DATE,
+    creted_time time,
     
 	CONSTRAINT FK_Prison_Id FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
     CONSTRAINT FK_Doctor_Id FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
@@ -125,3 +136,15 @@ CREATE TABLE health_status_changes(
     CONSTRAINT FK_Doctor_ID_ FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
 
 );
+
+CREATE TABLE officer (
+	worker_id int,
+    `password` int,
+    `name` varchar(30),
+    birth_date date,
+    country varchar(10),
+    phone int,
+    
+    PRIMARY KEY (worker_id)
+);
+

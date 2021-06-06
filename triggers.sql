@@ -51,7 +51,7 @@ CREATE TRIGGER appointment_added AFTER INSERT
 ON appointment
 FOR EACH ROW
 BEGIN
-	UPDATE doctor SET doctor.size = doctor.size + 1
+	UPDATE doctor SET doctor.appointment_count = doctor.appointment_count + 1
     WHERE NEW.doctor_id = doctor.worker_id;
 END//
 DELIMITER ;
