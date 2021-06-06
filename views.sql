@@ -9,4 +9,11 @@ CREATE VIEW remainingDays AS
 SELECT j.prison_id, prison.`name`, DATEDIFF(prison.release_date, CURDATE()) 
 FROM judgement j, prison
 WHERE prison.prison_id = j.prison_id
-ORDER BY  prison.prison_id
+ORDER BY  prison.prison_id;
+
+CREATE VIEW jailers_ward AS
+SELECT jailer.worker_id, jailer.`name`,  on_duty.ward_no
+FROM on_duty , jailer
+WHERE jailer.worker_id = on_duty.jailer_id
+ORDER BY jailer.jailer.id;
+
