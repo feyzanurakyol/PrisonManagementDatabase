@@ -32,7 +32,10 @@ db.connect((err,res) =>{
 
 //register view engine
 app.set('view engine', 'ejs');
+
 app.use(express.urlencoded({extended: true}))
+
+//app.use(express.json());
 
 //listen for request
 app.listen(3000)
@@ -51,11 +54,102 @@ app.get('/', (req,res) =>{
 
 })
 
-app.get('/login', (req,res) =>{
-    res.render('login.ejs');
+app.get('/loginDoc', (req,res) =>{
+    res.render('loginDoc.ejs');
 })
 
-app.post('/login', (req,res) => {
+
+app.post('/loginDoc', async(req,res) => {
+    try{
+
+        const {id, password} = req.body;
+
+        db.query("SELECT worker_id, `password` FROM doctor WHERE worker_id = ?",[id],(error,result) =>{
+            if(error){
+                console.log(error);
+            } 
+
+            console.log(result);
+            var count = Object.keys(result).length;
+
+            if(!count){
+                res.send('WRONG ID OR PASSWORD! <p><a href="/loginDoc"> Login Doctor</a></p>');
+            } 
+
+            if(count == 1){
+                res.redirect("/doctor");
+            } else {
+                console.log(count);
+            }
+
+        })
+    }catch(error){
+        console.log(error);
+    }
+        
+})
+
+app.get("/doctor",(req, res) => {
+    res.render("doctor.ejs");
+})
+
+app.get('/loginOff', (req,res) =>{
+    res.render('loginOff.ejs');
+})
+
+
+app.post('/loginOff', async(req,res) => {
+    try{
+
+        const {id, password} = req.body;
+
+        db.query("SELECT worker_id, `password` FROM officer WHERE worker_id = ?",[id],(error,result) =>{
+            if(error){
+                console.log(error);
+            } 
+
+            console.log(result);
+            var count = Object.keys(result).length;
+
+            if(!count){
+                res.send('WRONG ID OR PASSWORD! <p><a href="/loginOff"> Login Officer</a></p>');
+            } 
+
+            if(count == 1){
+                res.redirect("/officer");
+            } else {
+                console.log(count);
+            }
+
+        })
+    }catch(error){
+        console.log(error);
+    }
+        
+})
+
+app.get('/officer', (req,res) => {
+    res.render("officer.ejs");
+})
+
+app.get('/officer/prisonAdd', (req, res) => {
+    res.render("prisonAdd.ejs");
+})
+
+app.post('/officer/prisonAdd', (req,res) => {
     console.log(req.body);
+
+    const prison_id = req.body.prison_id;
+    const ward_id = req.body.ward_id;
+    const tc = req.body.tc;
+    const name = req.body.name;
+    const birth_date = req.body.bdate;
+    const phone = req.body.phone;
+    const country = req.body.country;
+    const arrest_date = req.body.adate;
+    const release_date = req.body.rdate;
+
+    res.send(name + " added successfully" +"\n" 
+        +'<p><a href="/officer">Return Officer Page</a></p>');
 })
 
