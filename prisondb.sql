@@ -3,7 +3,7 @@ CREATE DATABASE `PrisonDatabase`;
 USE `PrisonDatabase`;
 
 CREATE TABLE jailer (
-	`worker_id` int NOT NULL,
+	`worker_id` int NOT NULL auto_increment,
     `tc` int NOT NULL,
 	`name` varchar(30) NOT NULL,
     `birth_date` date NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE jailer (
  );
  
  CREATE TABLE ward (
-	`ward_id` int NOT NULL,
+	`ward_id` int NOT NULL auto_increment,
     `size` int NOT NULL,
     `capacity` int NOT NULL,
 	`floor no` varchar(30) NOT NULL,    
@@ -26,24 +26,24 @@ CREATE TABLE on_duty (
 	`jailer_id` int,
     `ward_no` int,
     
-    CONSTRAINT FK_Jailer FOREIGN KEY(jailer_id) REFERENCES jailer(worker_id),
-    CONSTRAINT FK_Ward FOREIGN KEY(ward_no) REFERENCES ward(ward_id),
+    CONSTRAINT FK_Jailer FOREIGN KEY(jailer_id) REFERENCES jailer(worker_id) ON DELETE CASCADE,
+    CONSTRAINT FK_Ward FOREIGN KEY(ward_no) REFERENCES ward(ward_id)ON DELETE CASCADE, 
     PRIMARY KEY(jailer_id,ward_no)
 );
 
 CREATE TABLE prison (
-	`prison_id` int NOT NULL,
+	`prison_id` int NOT NULL auto_increment,
 	`ward_id` int,
     `tc` int NOT NULL,
-	`name` varchar(30) NOT NULL,
-    `birth_date` date NOT NULL,
+	`name` varchar(30),
+    `birth_date` date,
     `phone` int,
     `country` varchar(300),
     arrest_date date,
     release_date date,
 	
     PRIMARY KEY (`prison_id`),
-    CONSTRAINT FK_WardID FOREIGN KEY (ward_id) REFERENCES ward(ward_id)
+    CONSTRAINT FK_WardID FOREIGN KEY (ward_id) REFERENCES ward(ward_id) ON DELETE CASCADE
 );
 
 CREATE TABLE judgement (
@@ -51,13 +51,13 @@ CREATE TABLE judgement (
 	criminal_type varchar(100),
     conviction_time int,
     
-    CONSTRAINT FK_PrisonId FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
+    CONSTRAINT FK_PrisonId FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
     PRIMARY KEY(prison_id,criminal_type)
 );
 
 
 CREATE TABLE visitor (
-    `tc` int NOT NULL,
+    `tc` int NOT NULL auto_increment,
 	`name` varchar(30) NOT NULL,
     `birth_date` date NOT NULL,
     `phone` int,
@@ -72,13 +72,13 @@ CREATE TABLE visit(
     visitor_tc int,
     visit_date date,
     
-    CONSTRAINT FK_VisitPrison FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
-    CONSTRAINT FK_VisitorTC FOREIGN KEY(visitor_tc) REFERENCES visitor(tc),
+    CONSTRAINT FK_VisitPrison FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
+    CONSTRAINT FK_VisitorTC FOREIGN KEY(visitor_tc) REFERENCES visitor(tc) ON DELETE CASCADE,
     PRIMARY KEY(prison_id,visitor_tc)
 );
 
 CREATE TABLE department(
-	department_id int,
+	department_id int auto_increment,
     department_name varchar(15),
 	capacity int,
     
@@ -87,7 +87,7 @@ CREATE TABLE department(
 );
 
 CREATE TABLE doctor (
-	`worker_id` int NOT NULL,
+	`worker_id` int NOT NULL auto_increment,
     `password` int,
     `tc` int NOT NULL,
 	`name` varchar(30) NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE doctor (
     appointment_count int,
     
     PRIMARY KEY(worker_id),
-    CONSTRAINT FK_DepartmenId FOREIGN KEY (department_id) REFERENCES department(department_id)
+    CONSTRAINT FK_DepartmenId FOREIGN KEY (department_id) REFERENCES department(department_id) ON DELETE CASCADE
 );
 
 CREATE TABLE health_status(
@@ -109,8 +109,8 @@ CREATE TABLE health_status(
     disability_status varchar(30),
     doctor_id int,
     
-    CONSTRAINT FK_PrisonHealthId FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
-    CONSTRAINT FK_DoctorId FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+    CONSTRAINT FK_PrisonHealthId FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
+    CONSTRAINT FK_DoctorId FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id) ON DELETE CASCADE
 );
 
 
@@ -120,8 +120,8 @@ CREATE TABLE appointment(
     created_date DATE,
     created_time time,
     
-	CONSTRAINT FK_Prison_Id FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
-    CONSTRAINT FK_Doctor_Id FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+	CONSTRAINT FK_Prison_Id FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
+    CONSTRAINT FK_Doctor_Id FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id) ON DELETE CASCADE
 );
 
 CREATE TABLE health_status_changes(
@@ -134,13 +134,13 @@ CREATE TABLE health_status_changes(
     disability_status varchar(30),
     doctor_id int,
     
-    CONSTRAINT FK_Prison_ID_ FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
-    CONSTRAINT FK_Doctor_ID_ FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+    CONSTRAINT FK_Prison_ID_ FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
+    CONSTRAINT FK_Doctor_ID_ FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id ) ON DELETE CASCADE
 
 );
 
 CREATE TABLE officer (
-	worker_id int,
+	worker_id int auto_increment,
     `password` int,
     `name` varchar(30),
     birth_date date,
@@ -158,6 +158,6 @@ CREATE TABLE appointment_done(
     created_date DATE,
     created_time time,
     
-	FOREIGN KEY (prison_id) REFERENCES prison(prison_id),
-    FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id)
+	FOREIGN KEY (prison_id) REFERENCES prison(prison_id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES doctor(worker_id) ON DELETE CASCADE
 );

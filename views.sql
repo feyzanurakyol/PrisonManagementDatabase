@@ -23,14 +23,42 @@ WHERE jailer.worker_id = on_duty.jailer_id
 ORDER BY jailer.worker_id;
 
 CREATE VIEW doctorsCapacity AS
-SELECT doctor.worker_id, doctor.`name`, (department.capacity - doctor.appointment_count) as remaining_capacity
+SELECT doctor.worker_id, doctor.`name`, department.department_name, 
+		(department.capacity - doctor.appointment_count) as remaining_capacity
 FROM doctor, department
 WHERE doctor.department_id = department.department_id
 ORDER BY (department.capacity - doctor.appointment_count);
 
 CREATE VIEW seeAllAppointments AS
-SELECT prison.prison_id, prison.`name`, department.department_name, doctor.`name`as doctor_name
-FROM appointment, doctor, prison, department
-WHERE prison.prison_id = appointment.prison_id and doctor.worker_id = appointment.doctor_id
-	and department.department_id = doctor.department_id
-ORDER BY prison.prison_id;
+SELECT p.prison_id, p.`name`, a.doctor_id, a.created_date
+FROM prison AS p
+JOIN appointment AS a
+ON p.prison_id = a.prison_id
+ORDER BY a.created_date;
+
+CREATE VIEW seeAllPrisonsAndVisitors AS
+SELECT prison.prison_id, prison.`name`, visit.visitor_tc, visit.visit_date
+FROM visit 
+RIGHT OUTER JOIN prison
+ON prison.prison_id = visit.prison_id ;
+
+
+CREATE VIEW seeAllPrisonsAppointments AS
+SELECT p.prison_id, p.`name`, a.doctor_id, a.created_date
+FROM prison AS p
+LEFT OUTER JOIN appointment AS a
+ON p.prison_id = a.prison_id ;
+
+CREATE VIEW seeWards AS
+SELECT p.prison_id, p.`name`, p.ward_id
+FROM prison AS p
+LEFT OUTER JOIN ward
+ON p.ward_id = ward.ward_id 
+UNION
+SELECT p.prison_id, p.`name`, p.ward_id
+FROM prison AS p
+RIGHT OUTER JOIN ward
+ON p.ward_id = ward.ward_id
+
+
+
