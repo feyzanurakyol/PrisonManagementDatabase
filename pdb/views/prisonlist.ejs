@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fetch using MySQL and Node.js</title>
+</head>
+<body>
+    <div class="table-data">
+<h2>All prisons</h2>
+    <table border="1">
+        <tr>
+            <th>Prison ID</th>
+            <th>Ward ID</th>
+            <th>TC</th>
+            <th>Full Name</th>
+            <th>Birth Date</th>
+            <th>Phones</th>
+            <th>Country</th>
+            <th>Arrest Date</th>
+            <th>Release Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        
+        <%
+        if(userData.length!=0){
+        var i=1;
+        userData.forEach(function(data){
+        %>
+        <tr>
+            <td><%=data.prison_id %></td>
+            <td><%=data.ward_id %></td>
+            <td><%=data.tc %></td>
+            <td><%=data.name %></td>
+            <td><%=data.birth_date %></td>
+            <td><%=data.phone %></td>
+            <td><%=data.country %></td>
+            <td><%=data.arrest_date %></td>
+            <td><%=data.release_date %></td>
+            <td><a href="/officer/prisonEdit">Edit</a></td>
+            <td><a href="/officer/prisonDelete">Delete</a></td>
+        </tr>
+        <%  i++; }) %>
+        <% } else{ %>
+            <tr>
+                <td colspan="7">No Data Found</td>
+            </tr>
+        <% } %>
+    </table>
+    </div>
+</body>
+</html>

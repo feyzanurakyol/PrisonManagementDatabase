@@ -40,15 +40,9 @@ app.use(express.urlencoded({extended: true}))
 //listen for request
 app.listen(3000)
 
-/*app.use((req, res) => {
-    console.log("new request made");
-    console.log("host: ", req.hostname);
-    console.log("path: ", req.path);
-    console.log("method: ", req.method);
-    next();
-})*/
 
-//GET requests
+//--------- LOGIN--------------
+
 app.get('/', (req,res) =>{
     res.render('index.ejs', {root: __dirname});
 
@@ -57,7 +51,6 @@ app.get('/', (req,res) =>{
 app.get('/loginDoc', (req,res) =>{
     res.render('loginDoc.ejs');
 })
-
 
 app.post('/loginDoc', async(req,res) => {
     try{
@@ -132,6 +125,62 @@ app.get('/officer', (req,res) => {
     res.render("officer.ejs");
 })
 
+//-----OFFICER VIEWS-------
+
+app.get("/officer/allPrisons", (req,res) => {
+    db.query("SELECT * FROM prison", (error, data, result)=>{
+        if(error){
+            console.log(error);
+        }
+
+        res.render("prisonlist.ejs",{userData: data});
+    })
+})
+
+app.get("/officer/doctorCapacity", (req,res) => {
+    db.query("SELECT * FROM prisondatabase.doctorscapacity;", (error, data, result)=>{
+        if(error){
+            console.log(error);
+        }
+
+        res.render("doctorCapacity.ejs",{userData: data});
+    })
+})
+
+app.get("/officer/seeJailersWard", (req,res) => {
+    db.query("SELECT * FROM prisondatabase.jailers_ward;", (error, data, result)=>{
+        if(error){
+            console.log(error);
+        }
+
+        res.render("seeJailersWard.ejs",{userData: data});
+    })
+})
+
+app.get("/officer/remainingDays", (req,res) => {
+    db.query("SELECT * FROM prisondatabase.remainingdays;", (error, data, result)=>{
+        if(error){
+            console.log(error);
+        }
+
+        res.render("remainingDays.ejs",{userData: data});
+    })
+})
+
+//----- OFFICER SEARCH -----
+app.get("/officer/prisonSearch", (req,res) => {
+    db.query("SELECT * FROM prisondatabase.remainingdays;", (error, data, result)=>{
+        if(error){
+            console.log(error);
+        }
+
+        res.render("prisonSearch.ejs",{userData: data});
+    })
+})
+
+
+//------- OFFICER METHODS ----------
+
 app.get('/officer/prisonAdd', (req, res) => {
     res.render("prisonAdd.ejs");
 })
@@ -139,17 +188,40 @@ app.get('/officer/prisonAdd', (req, res) => {
 app.post('/officer/prisonAdd', (req,res) => {
     console.log(req.body);
 
-    const prison_id = req.body.prison_id;
-    const ward_id = req.body.ward_id;
-    const tc = req.body.tc;
-    const name = req.body.name;
-    const birth_date = req.body.bdate;
-    const phone = req.body.phone;
-    const country = req.body.country;
-    const arrest_date = req.body.adate;
-    const release_date = req.body.rdate;
+    const {prison_id,ward_id, tc, name, birth_date, phone, country, arrest_date} = req.body;
 
-    res.send(name + " added successfully" +"\n" 
-        +'<p><a href="/officer">Return Officer Page</a></p>');
+    db.query("INSERT INTO prison VALUES ("+ parseInt(prison_id) +", "+ parseInt(ward_id) +", "+
+    parseInt(tc)+ ", \""+ name +"\", \"" + birth_date +"\", " + parseInt(phone) +", \""+ country + "\", \""+
+    arrest_date +"\", \"" + arrest_date + "\")" , (error,result) => {
+            if(error){
+                console.log(error);
+                res.send('ERROR');
+            } else {
+                console.log(parseInt(prison_id));
+                res.send(name + " added successfully" +"\n" 
+                      +'<p><a href="/officer">Return Officer Page</a></p>');
+            }
+        })
 })
+
+app.get("/officer/prisonDelete", (req,res) => {
+    res.render("prisonDelete.ejs");
+})
+
+app.post('/officer/prisonDelete', (req,res) => {
+    console.log(req.body);
+
+    db.query("DELETE FROM prison WHERE prison_id = " + parseInt(req.body.prison_id) , (error,result) => {
+            if(error){
+                console.log(+error);
+                res.send('ERROR');
+            } else {
+                res.send(req.body.prison_id + " deleted successfully" +"\n" 
+                      +'<p><a href="/officer">Return Officer Page</a></p>');
+            }
+        })
+})
+
+
+
 
